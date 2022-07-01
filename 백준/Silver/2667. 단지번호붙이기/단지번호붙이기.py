@@ -1,41 +1,45 @@
-n = int(input())
-graph = []
-num = []
+import sys
+sys.setrecursionlimit(10**9)
+input = sys.stdin.readline
 
-for i in range(n):
-    graph.append(list(map(int, input())))
+def dfs(ox,oy) : 
+  global cnt, vNum
+  cx = [1, -1, 0, 0]
+  cy = [0, 0, 1, -1]
 
-dx = [0, 0, 1, -1]
-dy = [1, -1, 0, 0]
-
-
-def DFS(x, y):
-    if x < 0 or x >= n or y < 0 or y >= n:
+  if ox < 0 or ox >= n or oy < 0 or oy >= n:
         return False
 
-    if graph[x][y] == 1:
-        global count
-        count += 1
-        graph[x][y] = 0
-        for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
-            DFS(nx, ny)
-        return True
-    return False
+  if board[ox][oy] == 1:
+    vNum +=1 
+    board[ox][oy] = 2
+    for i in range(4):
+        X = ox + cx[i]
+        Y = oy + cy[i]
+        dfs(X,Y)
 
 
-count = 0
-result = 0
+n = int(input())
+board = [[0] * (n) for _ in range(n)] 
+vNum = 0
+cnt = 0
+vNumList = []
 
-for i in range(n):
-    for j in range(n):
-        if DFS(i, j) == True:
-            num.append(count)
-            result += 1
-            count = 0
+for i in range(n) : 
+    line = list(map(int, input().strip()))
+    for j in range(n) : 
+       board[i][j] = line[j] 
 
-num.sort()
-print(result)
-for i in range(len(num)):
-    print(num[i])
+for i in range(n) : 
+    for j in range(n) : 
+        if board[i][j] == 1 :
+            dfs(i,j)
+            cnt += 1
+            vNumList.append(vNum)
+            vNum = 0
+
+
+print(cnt)   
+vNumList.sort()
+for i in vNumList :
+    print(i)
