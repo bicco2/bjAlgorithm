@@ -1,31 +1,21 @@
-n = int(input())
- 
-array = []
-for i in range(n):
-    array.append(list(map(int, input().split())))
- 
-visited = []
-for _ in range(n):
-    visited.append([False] * n)
- 
-dx = [1, 0]
-dy = [0, 1]
- 
-def dfs(x, y, visited):
-    if x >= n or x <= -1 or y >= n or y <= -1:
-        return 0
-    if visited[x][y] == True:
-        return 0
-    if array[x][y] == -1:
-        print('HaruHaru')
-        exit()
-    visited[x][y] = True
+def dfs(y, x):
+    global answer
+    tmp=board[y][x]
+    board[y][x]=0
+    dy=[0, 1]
+    dx=[1, 0]
+    if y==n-1 and x==n-1:
+        answer='HaruHaru'
+        return
     for i in range(2):
-        nx = x + dx[i] * array[x][y]
-        ny = y + dy[i] * array[x][y]
-        dfs(nx, ny, visited)
-    return True
- 
- 
-if dfs(0, 0, visited) == True:
-    print('Hing')
+        ny=y+(dy[i]*tmp)
+        nx=x+(dx[i]*tmp)
+        if ny>=0 and nx>=0 and ny<n and nx<n and board[ny][nx]!=0:
+            dfs(ny, nx)
+n=int(input())
+board=[]
+for _ in range(n):
+    board.append(list(map(int, input().split())))
+answer='Hing'
+dfs(0, 0)
+print(answer)
