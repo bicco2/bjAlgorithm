@@ -1,33 +1,26 @@
-import sys 
+computer = int(input())
 
-from collections import deque
-
-def bfs(start_v): # 1시작 
-  cnt = 0
-  visited =[start_v]
-  queue = deque()
-  queue.append(start_v)
-
-  while queue:
-    node = queue.popleft()
-
-    for w in range(len(graph[start_v])):
-      if graph[node][w] == 1 and (w not in visited) :
-        visited.append(w)
-        queue.append(w)
-        cnt += 1 
-  print(cnt)
+link = int(input())
 
 
-N = int(input())
-M = int(input())
+comGraph = [[0] * (computer+1) for _ in range(computer+1)]
 
+for i in range(link):
+    n,m = map(int, input().split(" ")) # 연결된 노드 갯수만큼 돌린다 . 
+    comGraph[n][m] = comGraph[m][n] = 1
 
-graph = [[0] * (N + 1) for _ in range(N + 1)] #노드 갯수 만큼의 이차원 배열 생성 8x8
+cnt = 0 
 
-for _ in range(M): #간선 갯수만큼 for문 돌려서 양방향 간선 생성 / 6개의 간선 생성 
-  m1, m2 = map(int, input().split())
-  # 노드 연결 하기
-  graph[m1][m2] = graph[m2][m1] = 1
+def dfs(start, visited = []):
+    global cnt
+    visited.append(start)
+    
+    for y in range(computer+1): # 컴퓨터 갯수 보다 하나 더 돌려야함
+        if comGraph[start][y] == 1 and y not in visited: 
+            dfs(y, visited)
+            cnt += 1
 
-bfs(1)
+dfs(1)
+
+print(cnt)
+
