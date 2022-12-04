@@ -19,6 +19,8 @@ while start <= end:
     for i in treeArr :  # 나무들을 현재 mid로 나눠서 몇미터 사용가능한지 계산 
         if i - mid > 0 :
             needTree += i - mid 
+        if needTree > M : 
+            break
 
     if needTree >= M : # 자른 나무 총합이 같거나 크면 조금 더 많이 잘라보기
         answer = mid
