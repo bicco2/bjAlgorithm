@@ -7,9 +7,7 @@ function solution(d, budget) {
             answer = i;
             break;
         }
-        else {
-            answer = i + 1;
-        }
+        answer = i + 1;
     }
     return answer;
 }
