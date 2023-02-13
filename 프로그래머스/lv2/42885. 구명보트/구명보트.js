@@ -1,19 +1,22 @@
 function solution(people, limit){
-	var answer = 0
-    people.sort((a,b) => b-a)
-    let l = 0
-    let r = people.length-1
+	var answer = 0;
+    people.sort((a,b) => a - b);
+    let start = 0;
+    let end = people.length - 1;
     
-    while(l<r){
-    	var sum = people[l] + people[r]
-        if(sum>limit){
-        	l++
-        } else {
-        	l++
-            r--
+    while(start < end){
+        if(people[start] + people[end] <= limit){
+            start += 1;
+            end -= 1;
+            answer++;
         }
-        answer++
+        else { 
+            end -= 1;
+            answer++;
+        }
     }
-    if(l == r) answer++
-    return answer
+    if(start === end){
+        answer++;
+    }
+    return answer;
 }
