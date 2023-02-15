@@ -1,44 +1,33 @@
-const fs = require('fs');
-const filePath = process.platform === 'linux' ? '/dev/stdin' : './testcase/6236.txt';
+const fs = require("fs");
+const filePath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
+let [input, ...arr] = fs.readFileSync(filePath).toString().trim().split("\n");
 
-let input = fs.readFileSync(filePath).toString().trim().split('\n');
+const [n, m] = input.split(" ").map((v) => +v);
+arr = arr.map((v) => +v);
 
-// console.log(input);
-const n = +input[0].split(' ')[0];
-const m = +input[0].split(' ')[1];
+let k = 0;
 
-const arr = input.slice(1).map(item => +item);
-let minM = 1;
-let maxM = arr.reduce((a, b) => a + b);
+let start = Math.max(...arr);
+let end = arr.reduce((acc, cur) => acc + cur, 0);
 
-let answer = Infinity;
-// console.log(arr)
-
-while (minM <= maxM) {
-  const mid = Math.floor((minM + maxM) / 2);
-  let cnt = 1;
-  let temp = mid;
-  let check = false;
-  for (const money of arr) {
-    if (money > mid) {
-      check = true;
-      break;
+while (start <= end) {
+  let mid = Math.floor((start + end) / 2);
+  let currentMoney = mid;
+  let count = 1;
+  for (let price of arr) {
+    if (currentMoney - price < 0) {
+      currentMoney = mid;
+      count += 1;
     }
-    if (temp - money < 0) {
-      temp = mid;
-      cnt++;
-    }
-    temp -= money;
+    currentMoney -= price;
   }
-  if (check) {
-    minM = mid + 1;
-    continue;
-  }
-  if (cnt <= m) {
-    maxM = mid - 1;
-    answer = mid;
+
+  if (count > +m || mid < Math.max(...arr)) {
+    start = mid + 1;
   } else {
-    minM = mid + 1;
+    end = mid - 1;
+    k = mid;
   }
 }
-console.log(answer);
+
+console.log(k);
