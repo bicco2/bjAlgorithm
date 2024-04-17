@@ -2,67 +2,79 @@ const fs = require('fs');
 const filePath = process.platform === 'linux' ? '/dev/stdin' : './input.txt';
 const [n, ...arr] = fs.readFileSync(filePath).toString().trim().split(/\s/);
 
+const dx = [-1, 1, 0, 0];
+const dy = [0, 0, -1, 1];
+
 let board = [];
 
+let max = 1;
+
 for (let i = 0; i < arr.length; i++) {
-  let subArray = arr[i].split('');
-  board.push(subArray);
+  let s = arr[i].split('');
+  board.push(s);
 }
 
-function swap(i, j, k) {
-  const coord = [
-    [-1, 0],
-    [1, 0],
-    [0, -1],
-    [0, 1],
-  ];
-  const here = board[i][j];
-  if (
-    board[i + coord[k][0]] &&
-    board[i + coord[k][0]][j + coord[k][1]] &&
-    here !== board[i + coord[k][0]][j + coord[k][1]]
-  ) {
-    board[i][j] = board[i + coord[k][0]][j + coord[k][1]];
-    board[i + coord[k][0]][j + coord[k][1]] = here;
-    return true;
-  } else return false;
-}
+for (let x = 0; x < n; x++) {
+  if (max === n) break;
+  for (let y = 0; y < n; y++) {
+    if (max === n) break;
+    for (let i = 0; i < 4; i++) {
+      if (max === n) break;
+      let X = x + dx[i];
+      let Y = y + dy[i];
 
-function search() {
-  for (let l = 0; l < 2; l++) {
-    for (let x = 0; x < n; x++) {
-      let count = 0;
-      let color = curboard(x, 0, l);
-      for (let y = 0; y < n; y++) {
-        if (curboard(x, y, l) === color) {
-          count++;
-          if (count > maxCount) {
-            maxCount = count;
-          }
-        } else {
-          color = curboard(x, y, l);
-          count = 1;
-        }
+      if (X >= 0 && X < n && Y >= 0 && Y < n) {
+        swap(x, y, X, Y);
+        search(x, y, X, Y);
+        swap(X, Y, x, y);
       }
     }
   }
 }
 
-function curboard(x, y, l) {
-  if (l === 0) return board[x][y];
-  else return board[y][x];
+console.log(max);
+
+function swap(x, y, X, Y) {
+  let temp = board[x][y];
+  board[x][y] = board[X][Y];
+  board[X][Y] = temp;
 }
 
-let maxCount = 0;
-for (let i = 0; i < n; i++) {
-  for (let j = 0; j < n; j++) {
-    for (let k = 0; k < 4; k++) {
-      if (swap(i, j, k)) {
-        search();
-        swap(i, j, k);
-      }
+function search(x, y, X, Y) {
+  let cnt = 1;
+  for (let i = 1; i < n; i++) {
+    if (board[x][i - 1] === board[x][i]) {
+      cnt++;
+      max = Math.max(cnt, max);
+    } else {
+      cnt = 1;
+    }
+  }
+  cnt = 1;
+  for (let i = 1; i < n; i++) {
+    if (board[X][i - 1] === board[X][i]) {
+      cnt++;
+      max = Math.max(cnt, max);
+    } else {
+      cnt = 1;
+    }
+  }
+  cnt = 1;
+  for (let i = 1; i < n; i++) {
+    if (board[i - 1][y] === board[i][y]) {
+      cnt++;
+      max = Math.max(cnt, max);
+    } else {
+      cnt = 1;
+    }
+  }
+  cnt = 1;
+  for (let i = 1; i < n; i++) {
+    if (board[i - 1][Y] === board[i][Y]) {
+      cnt++;
+      max = Math.max(cnt, max);
+    } else {
+      cnt = 1;
     }
   }
 }
-
-console.log(maxCount);
