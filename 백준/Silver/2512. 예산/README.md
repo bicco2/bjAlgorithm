@@ -1,14 +1,18 @@
-# [Silver III] 예산 - 2512 
+# [Silver II] 예산 - 2512 
 
 [문제 링크](https://www.acmicpc.net/problem/2512) 
 
 ### 성능 요약
 
-메모리: 30840 KB, 시간: 88 ms
+메모리: 11984 KB, 시간: 192 ms
 
 ### 분류
 
-이분 탐색(binary_search), 매개 변수 탐색(parametric_search)
+이분 탐색, 매개 변수 탐색
+
+### 제출 일자
+
+2024년 5월 1일 00:12:21
 
 ### 문제 설명
 
