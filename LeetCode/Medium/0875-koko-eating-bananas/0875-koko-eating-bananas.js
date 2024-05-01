@@ -18,6 +18,7 @@ var minEatingSpeed = function(piles, h) {
 
         if(cnt <= h) {
             end = mid - 1;
+            console.log("end : ", end);
         } else {
             start = mid + 1;
         }
